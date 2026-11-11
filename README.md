@@ -1,3 +1,2 @@
-# Joaomg-001.github.io
-
-This is my portfolio
+This is my portfolio:
+https://joaomg-001.github.io/
