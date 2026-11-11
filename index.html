@@ -17,7 +17,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,18 +36,46 @@
 </header>
 
 <section class="hero">
-    <p class="status"><span class="dot"></span>Open to work · Available now</p>
-    <h1>Gameplay<br>
-        <span>Programmer</span>
-    </h1>
-    <p class="lead">
-        I build gameplay systems in Unreal Engine 5 in Blueprints and C++.
-        Computer and Informatics Engineering graduate, University of Aveiro.
-    </p>
-    <div class="hero-actions">
-        <a href="#projects" class="button">See My Work</a>
-        <a href="#" class="button ghost play-link" target="_blank" rel="noopener" hidden>Play the Demo</a>
+    <div class="hero-text">
+        <p class="status"><span class="dot"></span>Open to work · Available now</p>
+        <h1>Junior Gameplay<br>
+            <span>Programmer</span>
+        </h1>
+        <p class="lead">
+            I build gameplay systems in Unreal Engine 5 in Blueprints and C++.
+            Computer and Informatics Engineering graduate, University of Aveiro.
+        </p>
+        <div class="hero-actions">
+            <a href="#projects" class="button">See My Work</a>
+            <a href="#" class="button ghost play-link" target="_blank" rel="noopener" hidden>Play the Demo</a>
+        </div>
     </div>
+
+    <aside class="player-card" aria-label="Player card">
+        <div class="pc-head">
+            <div class="pc-avatar">JG</div>
+            <div>
+                <p class="pc-label">Player</p>
+                <p class="pc-name">João Gonçalves</p>
+                <p class="pc-class">Class: Gameplay Programmer</p>
+            </div>
+        </div>
+
+        <dl class="pc-info">
+            <div><dt>Region</dt><dd>Portugal</dd></div>
+            <div><dt>Main engine</dt><dd>Unreal Engine 5</dd></div>
+        </dl>
+
+        <div class="pc-section">
+            <p class="pc-title">Quest log</p>
+            <ul class="pc-quests">
+                <li class="active"><span class="q-icon">!</span>2D Pixel Game</li>
+                <li class="done"><span class="q-icon">✓</span>Horror Game Prototype</li>
+                <li class="done"><span class="q-icon">✓</span>El Gatito Pizzeria</li>
+                <li class="done"><span class="q-icon">✓</span>Graduate from University of Aveiro</li>
+            </ul>
+        </div>
+    </aside>
 </section>
 
 <section id="projects">
@@ -90,11 +118,11 @@
                 <h4>What I added</h4>
                 <ul>
                     <li><strong>Enemy AI:</strong> Improved the course's AI and gave the enemy several distinct behaviours.</li>
-                    <li><strong>Player Movement and Health:</strong> Player life was increased to take multiple hits, and omni-directional dash was added.</li> 
+                    <li><strong>Player movement &amp; health:</strong> Increased player health so they can survive multiple hits, and added an omni-directional dash.</li>
                     <li><strong>Radar:</strong> Fully functional radar that targets items.</li>
                     <li><strong>Inventory:</strong> A simple inventory that tracks the items the player has picked up.</li>
                     <li><strong>Item Spawning:</strong> Items appear at random among a set of defined spawn points, so each run is different.</li>
-                    <li><strong>Main menu &amp; options:</strong> A start menu, Level select and an options screen. (There is a bug with the volume slider)</li>
+                    <li><strong>Main menu &amp; options:</strong> A start menu, level select and an options screen.</li>
                 </ul>
             </div>
         </div>
@@ -165,7 +193,7 @@
         <ul class="facts">
             <li><span>Based in</span>Portugal</li>
             <li><span>Languages</span>Portuguese (native), English (fluent)</li>
-            <li><span>Outside code</span>Gaming, Model assembly, Bouldering</li>
+            <li><span>Outside code</span>Gaming, model assembly, bouldering</li>
         </ul>
     </div>
 </section>
@@ -194,7 +222,6 @@
             <span>Git / GitHub</span>
             <span>Visual Studio</span>
             <span>VS Code</span>
-            <span>Linux / Unix</span>
             <span>PostgreSQL / MySQL</span>
         </div>
     </div>
@@ -202,6 +229,7 @@
     <p class="also">
         Also: networking from my degree (TCP/IP, OSPF/IPv6 routing, Wireshark, GNS3).
     </p>
+
 </section>
 
 <section id="background">
@@ -221,17 +249,6 @@
                     real-time 3D with Three.js, databases, networking and computer architecture.
                 </p>
             </div>
-
-            <h3 class="sub-title">Experience</h3>
-            <div class="entry">
-                <div class="entry-head">
-                    <h4>Administrative Assistant (Part-Time)</h4>
-                </div>
-                <p class="where">Clinicare · Medical office</p>
-                <p class="entry-text">
-                    Front desk, client communication, appointment scheduling and medical documentation.
-                </p>
-            </div>
         </div>
 
         <div>
@@ -249,7 +266,7 @@
 
 <section id="contact">
     <h2>Let's work together</h2>
-    <p>I'm looking for a gameplay programming role. Happy to chat.</p>
+    <p>I'm looking for a gameplay programming role.</p>
     <div class="contact-links">
         <a href="https://www.linkedin.com/in/joaomg001" class="button" target="_blank">LinkedIn</a>
         <a href="https://github.com/Joaomg-001" class="button ghost" target="_blank" rel="noopener">GitHub</a>
