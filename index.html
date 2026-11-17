@@ -114,6 +114,10 @@
                             <li><strong>Item spawning:</strong> items appear at random among a set of defined spawn points, so each run is different.</li>
                             <li><strong>Menus:</strong> a start menu, level select and an options screen.</li>
                         </ul>
+                        <div class="shots" data-folder="images/TheSpookyGame" hidden>
+                            <h4>Screenshots</h4>
+                            <div class="shots-grid"></div>
+                        </div>
                     </div>
                 </details>
                 <a href="#" class="cta play-link" target="_blank" rel="noopener" hidden>Download build ↗</a>
@@ -139,6 +143,10 @@
                             Made at the University of Aveiro. Grab the right pizzas and deliver each
                             order to the customers before the two-minute timer runs out.
                         </p>
+                        <div class="shots" data-folder="images/ElGatitoPizzeria" hidden>
+                            <h4>Screenshots</h4>
+                            <div class="shots-grid"></div>
+                        </div>
                     </div>
                 </details>
                 <a href="https://joaomg001.github.io/ElGatitoPizzeria/" class="cta" target="_blank" rel="noopener">Play in browser ↗</a>
@@ -164,6 +172,10 @@
                     </summary>
                     <div class="more">
                         <p>Built with Unreal Engine's 2D tools, exploring pixel-art gameplay and sprite animation.</p>
+                        <div class="shots" data-folder="images/PixelGame2D" hidden>
+                            <h4>Screenshots</h4>
+                            <div class="shots-grid"></div>
+                        </div>
                     </div>
                 </details>
             </div>
@@ -173,6 +185,14 @@
         <footer>© 2026 João Gonçalves</footer>
     </main>
 
+</div>
+
+<div class="lightbox" hidden>
+    <button class="lb-close" aria-label="Close">×</button>
+    <button class="lb-prev" aria-label="Previous screenshot">‹</button>
+    <img alt="">
+    <button class="lb-next" aria-label="Next screenshot">›</button>
+    <p class="lb-count"></p>
 </div>
 
 <script>
@@ -196,6 +216,92 @@
             a.hidden = false;
         });
     }
+    // ---------- Screenshot galleries ----------
+    // Each project looks for images/<Folder>/image1.png, image2.png, ...
+    // (or .jpg) and stops at the first number that doesn't exist.
+    function loadShots(box) {
+        if (box.dataset.loaded) return;
+        box.dataset.loaded = '1';
+        var grid = box.querySelector('.shots-grid');
+        var folder = box.dataset.folder;
+        var found = [];
+
+        function tryNext(n) {
+            if (n > 30) return done();
+            probe(folder + '/image' + n + '.png', function (url) {
+                if (url) { found.push(url); return tryNext(n + 1); }
+                probe(folder + '/image' + n + '.jpg', function (url2) {
+                    if (url2) { found.push(url2); return tryNext(n + 1); }
+                    done();
+                });
+            });
+        }
+        function probe(url, cb) {
+            var img = new Image();
+            img.onload = function () { cb(url); };
+            img.onerror = function () { cb(null); };
+            img.src = url;
+        }
+        function done() {
+            if (!found.length) return;
+            found.forEach(function (url, i) {
+                var b = document.createElement('button');
+                b.className = 'shot';
+                b.setAttribute('aria-label', 'Open screenshot ' + (i + 1));
+                b.innerHTML = '<img src="' + url + '" alt="Screenshot ' + (i + 1) + '" loading="lazy">';
+                b.addEventListener('click', function () { openLightbox(found, i); });
+                grid.appendChild(b);
+            });
+            box.hidden = false;
+        }
+        tryNext(1);
+    }
+
+    document.querySelectorAll('details').forEach(function (d) {
+        d.addEventListener('toggle', function () {
+            if (d.open) {
+                var box = d.querySelector('.shots');
+                if (box) loadShots(box);
+            }
+        });
+    });
+
+    // ---------- Lightbox ----------
+    var lb = document.querySelector('.lightbox');
+    var lbImg = lb.querySelector('img');
+    var lbCount = lb.querySelector('.lb-count');
+    var lbList = [], lbIndex = 0;
+
+    function showLb() {
+        lbImg.src = lbList[lbIndex];
+        lbCount.textContent = (lbIndex + 1) + ' / ' + lbList.length;
+        var multi = lbList.length > 1;
+        lb.querySelector('.lb-prev').hidden = !multi;
+        lb.querySelector('.lb-next').hidden = !multi;
+    }
+    function openLightbox(list, i) {
+        lbList = list; lbIndex = i; showLb();
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        lb.hidden = true;
+        document.body.style.overflow = '';
+    }
+    function step(d) {
+        lbIndex = (lbIndex + d + lbList.length) % lbList.length;
+        showLb();
+    }
+    lb.querySelector('.lb-close').addEventListener('click', closeLightbox);
+    lb.querySelector('.lb-prev').addEventListener('click', function (e) { e.stopPropagation(); step(-1); });
+    lb.querySelector('.lb-next').addEventListener('click', function (e) { e.stopPropagation(); step(1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function (e) {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') step(-1);
+        if (e.key === 'ArrowRight') step(1);
+    });
 </script>
 </body>
 </html>
