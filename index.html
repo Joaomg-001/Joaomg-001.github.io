@@ -114,9 +114,10 @@
                             <li><strong>Item spawning:</strong> items appear at random among a set of defined spawn points, so each run is different.</li>
                             <li><strong>Menus:</strong> a start menu, level select and an options screen.</li>
                         </ul>
-                        <div class="shots" data-folder="images/TheSpookyGame" hidden>
+                        <div class="shots" data-folder="images/TheSpookyGame">
                             <h4>Screenshots</h4>
-                            <div class="shots-grid"></div>
+                            <div class="shots-grid" aria-live="polite"></div>
+                            <p class="shots-empty" hidden>Screenshots coming soon.</p>
                         </div>
                     </div>
                 </details>
@@ -143,9 +144,10 @@
                             Made at the University of Aveiro. Grab the right pizzas and deliver each
                             order to the customers before the two-minute timer runs out.
                         </p>
-                        <div class="shots" data-folder="images/ElGatitoPizzeria" hidden>
+                        <div class="shots" data-folder="images/ElGatitoPizzeria">
                             <h4>Screenshots</h4>
-                            <div class="shots-grid"></div>
+                            <div class="shots-grid" aria-live="polite"></div>
+                            <p class="shots-empty" hidden>Screenshots coming soon.</p>
                         </div>
                     </div>
                 </details>
@@ -172,9 +174,10 @@
                     </summary>
                     <div class="more">
                         <p>Built with Unreal Engine's 2D tools, exploring pixel-art gameplay and sprite animation.</p>
-                        <div class="shots" data-folder="images/PixelGame2D" hidden>
+                        <div class="shots" data-folder="images/PixelGame2D">
                             <h4>Screenshots</h4>
-                            <div class="shots-grid"></div>
+                            <div class="shots-grid" aria-live="polite"></div>
+                            <p class="shots-empty" hidden>Screenshots coming soon.</p>
                         </div>
                     </div>
                 </details>
@@ -219,41 +222,64 @@
     // ---------- Screenshot galleries ----------
     // Each project looks for images/<Folder>/image1.png, image2.png, ...
     // (or .jpg) and stops at the first number that doesn't exist.
+    // Placeholder tiles shimmer while images are loading; each screenshot
+    // appears as soon as it's ready.
     function loadShots(box) {
         if (box.dataset.loaded) return;
         box.dataset.loaded = '1';
         var grid = box.querySelector('.shots-grid');
+        var empty = box.querySelector('.shots-empty');
         var folder = box.dataset.folder;
         var found = [];
 
-        function tryNext(n) {
-            if (n > 30) return done();
-            probe(folder + '/image' + n + '.png', function (url) {
-                if (url) { found.push(url); return tryNext(n + 1); }
-                probe(folder + '/image' + n + '.jpg', function (url2) {
-                    if (url2) { found.push(url2); return tryNext(n + 1); }
-                    done();
-                });
-            });
+        // start with three placeholder tiles
+        for (var k = 0; k < 3; k++) grid.appendChild(makeSkeleton());
+
+        function makeSkeleton() {
+            var sk = document.createElement('div');
+            sk.className = 'shot skeleton';
+            sk.setAttribute('aria-hidden', 'true');
+            return sk;
         }
+        function skeletons() { return grid.querySelectorAll('.skeleton'); }
+
+        function addShot(url) {
+            var i = found.length;
+            found.push(url);
+            var b = document.createElement('button');
+            b.className = 'shot';
+            b.setAttribute('aria-label', 'Open screenshot ' + (i + 1));
+            b.innerHTML = '<img src="' + url + '" alt="Screenshot ' + (i + 1) + '">';
+            b.addEventListener('click', function () { openLightbox(found, i); });
+            var first = grid.querySelector('.skeleton');
+            if (first) grid.replaceChild(b, first); else grid.appendChild(b);
+            // keep one placeholder after the real images while still searching
+            if (skeletons().length === 0) grid.appendChild(makeSkeleton());
+        }
+
         function probe(url, cb) {
             var img = new Image();
             img.onload = function () { cb(url); };
             img.onerror = function () { cb(null); };
             img.src = url;
         }
-        function done() {
-            if (!found.length) return;
-            found.forEach(function (url, i) {
-                var b = document.createElement('button');
-                b.className = 'shot';
-                b.setAttribute('aria-label', 'Open screenshot ' + (i + 1));
-                b.innerHTML = '<img src="' + url + '" alt="Screenshot ' + (i + 1) + '" loading="lazy">';
-                b.addEventListener('click', function () { openLightbox(found, i); });
-                grid.appendChild(b);
+
+        function tryNext(n) {
+            if (n > 30) return done();
+            probe(folder + '/image' + n + '.png', function (url) {
+                if (url) { addShot(url); return tryNext(n + 1); }
+                probe(folder + '/image' + n + '.jpg', function (url2) {
+                    if (url2) { addShot(url2); return tryNext(n + 1); }
+                    done();
+                });
             });
-            box.hidden = false;
         }
+
+        function done() {
+            skeletons().forEach(function (sk) { sk.remove(); });
+            if (!found.length) empty.hidden = false;
+        }
+
         tryNext(1);
     }
 

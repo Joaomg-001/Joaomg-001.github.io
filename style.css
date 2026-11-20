@@ -526,6 +526,41 @@ details[open] .toggle::after {
     object-fit: cover;
 }
 
+/* loading placeholder: a soft shimmer */
+.shot.skeleton {
+    cursor: default;
+    background: linear-gradient(100deg, #17191c 30%, #22252a 50%, #17191c 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.3s ease-in-out infinite;
+}
+
+.shot.skeleton:hover {
+    border-color: var(--line);
+    transform: none;
+}
+
+/* new screenshots fade in */
+.shot:not(.skeleton) {
+    animation: reveal 0.3s ease;
+}
+
+@keyframes shimmer {
+    from { background-position: 100% 0; }
+    to   { background-position: -100% 0; }
+}
+
+.shots-empty {
+    font-size: 14.5px;
+    color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shot.skeleton,
+    .shot:not(.skeleton) {
+        animation: none;
+    }
+}
+
 /* ---------- Lightbox (full-size screenshot) ---------- */
 
 .lightbox {
